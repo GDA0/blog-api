@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 export function Signup() {
   const {
@@ -9,15 +11,51 @@ export function Signup() {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const [errs, setErrs] = useState([]);
+  const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
+
+  async function onSubmit(data) {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/signup",
+        data
+      );
+      if (response.data.errors?.length) {
+        setErrs(response.data.errors);
+      } else {
+        setMsg(response.data.msg);
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const password = watch("password");
 
   return (
     <div className="mx-auto" style={{ maxWidth: "540px" }}>
       <h2 className="text-center">Sign up</h2>
+
+      {errs.length > 0 && (
+        <div className="alert alert-danger">
+          <ul className="mb-0">
+            {errs.map((err) => (
+              <li key={err.msg}>{err.msg}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {msg && (
+        <div className="alert alert-success" role="alert">
+          {msg}
+        </div>
+      )}
+
       <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 row">
           <div className="col">
