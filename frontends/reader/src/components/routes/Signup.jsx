@@ -1,10 +1,24 @@
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 export function Signup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const password = watch("password");
+
   return (
     <div className="mx-auto" style={{ maxWidth: "540px" }}>
       <h2 className="text-center">Sign up</h2>
-      <form className="my-3" action="/signup" method="post">
+      <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 row">
           <div className="col">
             <label htmlFor="firstName" className="form-label">
@@ -14,9 +28,18 @@ export function Signup() {
               type="text"
               className="form-control"
               id="firstName"
-              name="firstName"
               autoFocus
+              {...register("firstName", {
+                required: "First name is required",
+                validate: {
+                  notEmpty: (value) =>
+                    value.trim() !== "" || "First name is required",
+                },
+              })}
             />
+            {errors.firstName && (
+              <span className="text-danger">{errors.firstName.message}</span>
+            )}
           </div>
           <div className="col">
             <label htmlFor="lastName" className="form-label">
@@ -26,8 +49,17 @@ export function Signup() {
               type="text"
               className="form-control"
               id="lastName"
-              name="lastName"
+              {...register("lastName", {
+                required: "Last name is required",
+                validate: {
+                  notEmpty: (value) =>
+                    value.trim() !== "" || "Last name is required",
+                },
+              })}
             />
+            {errors.lastName && (
+              <span className="text-danger">{errors.lastName.message}</span>
+            )}
           </div>
         </div>
         <div className="mb-3">
@@ -38,8 +70,30 @@ export function Signup() {
             type="text"
             className="form-control"
             id="username"
-            name="username"
+            {...register("username", {
+              required: "Username is required",
+              minLength: {
+                value: 3,
+                message: "Username must be between 3 and 20 characters long",
+              },
+              maxLength: {
+                value: 20,
+                message: "Username must be between 3 and 20 characters long",
+              },
+              pattern: {
+                value: /^[a-zA-Z0-9_.]+$/,
+                message:
+                  "Username can only contain letters, numbers, underscores, or periods",
+              },
+              validate: {
+                notEmpty: (value) =>
+                  value.trim() !== "" || "Username is required",
+              },
+            })}
           />
+          {errors.username && (
+            <span className="text-danger">{errors.username.message}</span>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -49,9 +103,27 @@ export function Signup() {
             type="password"
             className="form-control"
             id="password"
-            name="password"
             autoComplete="new-password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be between 8 and 64 characters long",
+              },
+              maxLength: {
+                value: 64,
+                message: "Password must be between 8 and 64 characters long",
+              },
+              pattern: {
+                value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/,
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+              },
+            })}
           />
+          {errors.password && (
+            <span className="text-danger">{errors.password.message}</span>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="confirmPassword" className="form-label">
@@ -61,9 +133,18 @@ export function Signup() {
             type="password"
             className="form-control"
             id="confirmPassword"
-            name="confirmPassword"
             autoComplete="new-password"
+            {...register("confirmPassword", {
+              required: "Confirm password is required",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            })}
           />
+          {errors.confirmPassword && (
+            <span className="text-danger">
+              {errors.confirmPassword.message}
+            </span>
+          )}
         </div>
         <button type="submit" className="btn btn-primary">
           Sign Up
