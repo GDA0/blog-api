@@ -41,7 +41,7 @@ export function Root() {
             </div>
           </div>
         )}
-        <Outlet />
+        <Outlet context={[user]} />
       </main>
       <Footer />
     </>

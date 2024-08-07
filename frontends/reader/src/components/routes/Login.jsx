@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+
+import { redirectTo } from "../../redirectTo";
 
 export function Login() {
   const {
@@ -13,7 +15,6 @@ export function Login() {
 
   const [errs, setErrs] = useState([]);
   const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
@@ -29,7 +30,7 @@ export function Login() {
       localStorage.setItem("token", token);
 
       setTimeout(() => {
-        navigate("/");
+        redirectTo("/");
       }, 1500);
     } catch (error) {
       if (!error.response) {

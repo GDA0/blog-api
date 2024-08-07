@@ -7,6 +7,7 @@ import { ErrorPage } from "./components/ErrorPage";
 import { Signup } from "./components/routes/Signup";
 import { Login } from "./components/routes/Login";
 import { Index } from "./components/Index";
+import { Profile } from "./components/routes/Profile";
 
 import "./index.css";
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },
