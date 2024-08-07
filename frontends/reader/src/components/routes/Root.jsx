@@ -2,22 +2,17 @@ import { useState, useEffect } from "react";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 import { Outlet } from "react-router-dom";
-import axios from "axios";
+import axios from "../../axios-instance";
 
 export function Root() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:3000/api", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get("/");
         const { user } = response.data;
         setUser(user);
       } catch (error) {
@@ -28,7 +23,7 @@ export function Root() {
     };
 
     fetchUser();
-  }, [token]);
+  }, []);
 
   return (
     <>
@@ -36,7 +31,7 @@ export function Root() {
       <main className="container my-5 py-3">
         {loading && (
           <div className="text-center">
-            <div className="spinner-border" role="status">
+            <div className="spinner-border text-primary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>

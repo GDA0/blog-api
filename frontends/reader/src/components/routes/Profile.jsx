@@ -13,19 +13,11 @@ export function Profile() {
     event.preventDefault();
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:3000/api/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:3000/api/logout");
       if (response.status === 200) {
-        // Clear the token from localStorage and redirect to the index page
+
         localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         setTimeout(() => {
           redirectTo("/");
         }, 1500);

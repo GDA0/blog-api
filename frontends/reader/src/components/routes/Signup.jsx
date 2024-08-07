@@ -24,11 +24,12 @@ export function Signup() {
         "http://localhost:3000/api/signup",
         data
       );
-      const { msg, token } = response.data;
+      const { msg, token, refreshToken } = response.data;
 
       setErrs([]);
       setMsg(msg);
       localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
 
       setTimeout(() => {
         redirectTo("/");
@@ -55,7 +56,7 @@ export function Signup() {
 
       {loading && (
         <div className="text-center">
-          <div className="spinner-border" role="status">
+          <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>

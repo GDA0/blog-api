@@ -7,6 +7,9 @@ import axios from "axios";
 import { redirectTo } from "../../redirectTo";
 
 export function Login() {
+  // const token = localStorage.getItem("token");
+  // token && redirectTo("/");
+
   const {
     register,
     handleSubmit,
@@ -24,10 +27,11 @@ export function Login() {
         "http://localhost:3000/api/login",
         data
       );
-      const { msg, token } = response.data;
+      const { msg, token, refreshToken } = response.data;
 
       setMsg(msg);
       localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
 
       setTimeout(() => {
         redirectTo("/");
@@ -36,7 +40,7 @@ export function Login() {
       if (!error.response) {
         return setErrs([
           {
-            msg: "An error occurred during sign up. Please try again later.",
+            msg: "An error occurred during login up. Please try again later.",
           },
         ]);
       }
@@ -52,7 +56,7 @@ export function Login() {
 
       {loading && (
         <div className="text-center">
-          <div className="spinner-border" role="status">
+          <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
