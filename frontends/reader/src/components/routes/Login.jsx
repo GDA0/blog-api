@@ -1,14 +1,14 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-export function Signup() {
+export function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
 
   const [errs, setErrs] = useState([]);
@@ -20,12 +20,11 @@ export function Signup() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/signup",
+        "http://localhost:3000/api/login",
         data
       );
       const { msg, token } = response.data;
 
-      setErrs([]);
       setMsg(msg);
       localStorage.setItem("token", token);
 
@@ -46,11 +45,9 @@ export function Signup() {
     }
   }
 
-  const password = watch("password");
-
   return (
     <div className="mx-auto" style={{ maxWidth: "540px" }}>
-      <h2 className="text-center">Sign up</h2>
+      <h2 className="text-center">Log In</h2>
 
       {loading && (
         <div className="text-center">
@@ -77,49 +74,6 @@ export function Signup() {
       )}
 
       <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3 row">
-          <div className="col">
-            <label htmlFor="firstName" className="form-label">
-              First name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="firstName"
-              autoFocus
-              {...register("firstName", {
-                required: "First name is required",
-                validate: {
-                  notEmpty: (value) =>
-                    value.trim() !== "" || "First name is required",
-                },
-              })}
-            />
-            {errors.firstName && (
-              <span className="text-danger">{errors.firstName.message}</span>
-            )}
-          </div>
-          <div className="col">
-            <label htmlFor="lastName" className="form-label">
-              Last name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              {...register("lastName", {
-                required: "Last name is required",
-                validate: {
-                  notEmpty: (value) =>
-                    value.trim() !== "" || "Last name is required",
-                },
-              })}
-            />
-            {errors.lastName && (
-              <span className="text-danger">{errors.lastName.message}</span>
-            )}
-          </div>
-        </div>
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
             Username
@@ -128,6 +82,8 @@ export function Signup() {
             type="text"
             className="form-control"
             id="username"
+            autoComplete="username"
+            autoFocus
             {...register("username", {
               required: "Username is required",
               minLength: {
@@ -143,10 +99,6 @@ export function Signup() {
                 message:
                   "Username can only contain letters, numbers, underscores, or periods",
               },
-              validate: {
-                notEmpty: (value) =>
-                  value.trim() !== "" || "Username is required",
-              },
             })}
           />
           {errors.username && (
@@ -161,7 +113,7 @@ export function Signup() {
             type="password"
             className="form-control"
             id="password"
-            autoComplete="new-password"
+            autoComplete="current-password"
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -183,33 +135,12 @@ export function Signup() {
             <span className="text-danger">{errors.password.message}</span>
           )}
         </div>
-        <div className="mb-3">
-          <label htmlFor="confirmPassword" className="form-label">
-            Confirm password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="confirmPassword"
-            autoComplete="new-password"
-            {...register("confirmPassword", {
-              required: "Confirm password is required",
-              validate: (value) =>
-                value === password || "Passwords do not match",
-            })}
-          />
-          {errors.confirmPassword && (
-            <span className="text-danger">
-              {errors.confirmPassword.message}
-            </span>
-          )}
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Signing Up..." : "Sign Up"}
+        <button type="submit" className="btn btn-primary">
+          Log In
         </button>
       </form>
       <p className="text-center">
-        Already have an account? <Link to="/login">Log in</Link>
+        Don't have an account? <Link to="/signup">Sign up</Link>
       </p>
     </div>
   );
