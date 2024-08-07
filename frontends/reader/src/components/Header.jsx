@@ -11,15 +11,9 @@ export function Header({ user }) {
           </Link>
           <div className="ms-auto d-flex align-items-center">
             {user ? (
-              <>
-                <span className="d-flex align-items-center">
-                  <i className="bi bi-person me-1"></i> {user.firstName}
-                </span>
-                <span className="mx-3">|</span>
-                <Link to="/log-out" className="d-flex align-items-center">
-                  <i className="bi bi-box-arrow-right me-1"></i> Log out
-                </Link>
-              </>
+              <Link to="/profile" className="d-flex align-items-center fs-5">
+                <i className="bi bi-person me-1"></i> {user.firstName}
+              </Link>
             ) : (
               <ol className="breadcrumb mb-0">
                 <li className="breadcrumb-item">
