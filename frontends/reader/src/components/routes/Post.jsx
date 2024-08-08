@@ -1,42 +1,53 @@
-import {
-  formatDistanceToNow,
-  formatRelative,
-  format,
-  subDays,
-  getYear,
-} from "date-fns";
 import { Link, useParams, useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import axios from "../../axios-instance";
+import { formatDate } from "../../formatDate";
 
 export function Post() {
   const { postId } = useParams();
-  const [, posts] = useOutletContext();
+  const [user, posts] = useOutletContext();
   const post = posts.find((post) => post.id === postId);
+  const [commentText, setCommentText] = useState("");
+  const [commentError, setCommentError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   if (!post) {
     return <div>Post not found</div>;
   }
 
-  const now = new Date();
-  const postDate = new Date(post.updatedAt);
-  const currentYear = getYear(now);
-  const postYear = getYear(postDate);
+  const combinedDate = formatDate(post.updatedAt);
 
-  // Determine the distance and relative format
-  const distance = formatDistanceToNow(postDate, { addSuffix: true });
-  const relative = formatRelative(postDate, now);
+  async function handleCommentSubmit(event) {
+    event.preventDefault();
 
-  // Custom format for dates older than 5 days
-  const customDateFormat =
-    postYear === currentYear
-      ? format(postDate, "EEE, MMM d 'at' h:mm a")
-      : format(postDate, "EEE, MMM d, yyyy 'at' h:mm a");
+    if (!commentText.trim()) {
+      setCommentError("Comment cannot be empty");
+      return;
+    }
 
-  const combinedDate =
-    postDate > subDays(now, 5) ? `${distance} • ${relative}` : customDateFormat;
+    try {
+      setLoading(true);
+      const response = await axios.post(`/${postId}/comments`, {
+        content: commentText,
+        authorId: user.id,
+      });
+
+      const { comment } = response.data;
+
+      setCommentText("");
+      setCommentError("");
+      post.comments.unshift(comment);
+    } catch (error) {
+      console.error(error);
+      setCommentError("Failed to post comment");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="single-post">
-      <div className="card h-100">
+      <div className="card">
         <div className="card-body d-flex flex-column justify-content-between">
           <div className="mb-3">
             <p className="card-text mb-1 small">
@@ -59,15 +70,61 @@ export function Post() {
         </div>
       </div>
 
-      <div className="comments mt-3">
+      <div className="comments my-3">
         <h5>Comments ({post.comments.length})</h5>
-        {post.comments.map((comment) => (
-          <div key={comment.id} className="comment">
+        <div>
+          {user ? (
+            <form
+              className="my-3 border p-3 rounded"
+              onSubmit={handleCommentSubmit}
+              style={{ maxWidth: "600px" }}
+            >
+              <div className="mb-3">
+                <label htmlFor="comment" className="form-label">
+                  Add Comment
+                </label>
+                <textarea
+                  name="comment"
+                  id="comment"
+                  className="form-control"
+                  rows={"7"}
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                ></textarea>
+                {commentError && (
+                  <div className="text-danger mt-1">{commentError}</div>
+                )}
+              </div>
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading}
+              >
+                Submit
+              </button>
+            </form>
+          ) : (
             <p>
-              <strong>{comment.author.username}:</strong> {comment.content}
+              <Link to="/login">Log in</Link> to add a comment.
             </p>
+          )}
+        </div>
+        <div className="border my-3 p-3 rounded">
+          <div className="list-group list-group-flush">
+            {post.comments.map((comment) => (
+              <div key={comment.id} className="list-group-item">
+                <p className="card-text mb-1 small">
+                  <Link>@{comment.author.username}</Link>
+                  <span className="mx-1 text-body-secondary">|</span>
+                  <span className="text-body-secondary">
+                    {formatDate(comment.updatedAt)}
+                  </span>
+                </p>
+                <p className="mb-0">{comment.content}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
