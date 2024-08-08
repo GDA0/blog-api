@@ -42,7 +42,7 @@ export function Login() {
         // Refresh the previous page after a short delay
         setTimeout(() => {
           window.location.reload();
-        }, 1.5);
+        }, 15);
       }, 1500);
     } catch (error) {
       if (!error.response) {
