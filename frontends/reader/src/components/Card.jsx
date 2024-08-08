@@ -15,7 +15,6 @@ const Card = ({
   author,
   updatedAt,
   commentsCount,
-  likesCount,
 }) => {
   const excerpt =
     content.length > 100 ? content.substring(0, 100) + "..." : content;
@@ -57,9 +56,6 @@ const Card = ({
             <span className="me-2">
               <i className="bi bi-chat"></i> {commentsCount}
             </span>
-            <span>
-              <i className="bi bi-hand-thumbs-up"></i> {likesCount}
-            </span>
           </div>
         </div>
       </div>
@@ -74,7 +70,6 @@ Card.propTypes = {
   author: PropTypes.string.isRequired,
   updatedAt: PropTypes.string.isRequired,
   commentsCount: PropTypes.number.isRequired,
-  likesCount: PropTypes.number.isRequired,
 };
 
 export default Card;

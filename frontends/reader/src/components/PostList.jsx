@@ -13,7 +13,6 @@ export function PostList({ posts }) {
             author={post.author.username}
             updatedAt={post.updatedAt}
             commentsCount={post.comments.length}
-            likesCount={post.likes.length}
           />
         </div>
       ))}
@@ -32,7 +31,6 @@ PostList.propTypes = {
       }).isRequired,
       updatedAt: PropTypes.string.isRequired,
       comments: PropTypes.array.isRequired,
-      likes: PropTypes.array.isRequired,
     })
   ).isRequired,
 };

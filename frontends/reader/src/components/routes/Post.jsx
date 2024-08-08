@@ -62,9 +62,6 @@ export function Post() {
               <span className="me-2">
                 <i className="bi bi-chat"></i> {post.comments.length}
               </span>
-              <span>
-                <i className="bi bi-hand-thumbs-up"></i> {post.likes.length}
-              </span>
             </div>
           </div>
         </div>
