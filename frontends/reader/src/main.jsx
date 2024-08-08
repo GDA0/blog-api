@@ -8,6 +8,7 @@ import { Signup } from "./components/routes/Signup";
 import { Login } from "./components/routes/Login";
 import { Index } from "./components/Index";
 import { Profile } from "./components/routes/Profile";
+import { Post } from "./components/routes/Post";
 
 import "./index.css";
 
@@ -19,16 +20,20 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Index /> },
       {
-        path: "/signup",
+        path: "signup",
         element: <Signup />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
+      },
+      {
+        path: ":postId",
+        element: <Post />,
       },
     ],
   },

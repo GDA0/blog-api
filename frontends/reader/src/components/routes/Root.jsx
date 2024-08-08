@@ -7,14 +7,17 @@ import axios from "../../axios-instance";
 export function Root() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
       try {
         const response = await axios.get("/");
-        const { user } = response.data;
+        const { user, posts } = response.data;
+
         setUser(user);
+        setPosts(posts);
       } catch (error) {
         console.error(error);
       } finally {
@@ -36,7 +39,7 @@ export function Root() {
             </div>
           </div>
         )}
-        <Outlet context={[user]} />
+        <Outlet context={[user, posts]} />
       </main>
       <Footer />
     </>

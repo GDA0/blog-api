@@ -1,7 +1,7 @@
+import { useOutletContext } from "react-router-dom";
+import { PostList } from "./PostList";
+
 export function Index() {
-  return (
-    <div>
-      <p>Blogs will come here</p>
-    </div>
-  );
+  const [, posts] = useOutletContext();
+  return <PostList posts={posts} />;
 }
