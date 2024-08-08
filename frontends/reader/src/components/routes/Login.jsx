@@ -1,15 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { redirectTo } from "../../redirectTo";
 
 export function Login() {
-  // const token = localStorage.getItem("token");
-  // token && redirectTo("/");
-
   const {
     register,
     handleSubmit,
@@ -19,6 +16,11 @@ export function Login() {
   const [errs, setErrs] = useState([]);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    token && redirectTo("/");
+  }, []);
 
   async function onSubmit(data) {
     setLoading(true);
@@ -34,7 +36,13 @@ export function Login() {
       localStorage.setItem("refreshToken", refreshToken);
 
       setTimeout(() => {
-        redirectTo("/");
+        // Navigate back
+        window.history.back();
+
+        // Refresh the previous page after a short delay
+        setTimeout(() => {
+          window.location.reload();
+        }, 1.5);
       }, 1500);
     } catch (error) {
       if (!error.response) {
