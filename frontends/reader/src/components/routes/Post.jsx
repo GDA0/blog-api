@@ -12,7 +12,7 @@ export function Post() {
   const [loading, setLoading] = useState(false);
 
   if (!post) {
-    return <div>Post not found</div>;
+    return;
   }
 
   const combinedDate = formatDate(post.updatedAt);

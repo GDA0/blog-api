@@ -5,7 +5,7 @@ export function Index() {
   const [, posts] = useOutletContext();
 
   if (!posts || posts.length === 0) {
-    return <div>No posts available.</div>;
+    return;
   }
 
   return <PostList posts={posts} />;
