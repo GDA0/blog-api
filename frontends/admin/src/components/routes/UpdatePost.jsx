@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
-import axios from "axios";
+
+import axios from "../../axios-instance";
+import { redirectTo } from "../../redirectTo";
 
 import 'dotenv/config'
 
@@ -23,7 +25,7 @@ export function UpdatePost() {
   }, [post]);
 
   if (!post) {
-    return <div>Post not found</div>;
+    return;
   }
 
   const handleEditorChange = (content) => {
@@ -39,9 +41,11 @@ export function UpdatePost() {
         content,
       });
 
-      const { post: updatedPost } = response.data;
+      const { updatedPost } = response.data;
       post = updatedPost;
       setError("");
+
+      redirectTo(`/${postId}`);
     } catch (error) {
       console.error(error);
       setError("Something went wrong");

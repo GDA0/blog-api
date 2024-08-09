@@ -52,11 +52,14 @@ export function Post() {
       <div className="card">
         <div className="card-body d-flex flex-column justify-content-between">
           <div className="mb-3">
-            <p className="card-text mb-1 small">
-              <span className="text-body-secondary">{combinedDate}</span>
+            <p className="card-text mb-1 small text-body-secondary">
+              Updated <span>{combinedDate}</span>
             </p>
             <h5 className="card-title">{post.title}</h5>
-            <p className="card-text">{post.content}</p>
+            <div
+              className="card-text"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            ></div>
           </div>
           <div>
             <div className="d-flex justify-content-between">

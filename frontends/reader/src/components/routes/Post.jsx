@@ -55,7 +55,10 @@ export function Post() {
               <span className="text-body-secondary">{combinedDate}</span>
             </p>
             <h5 className="card-title">{post.title}</h5>
-            <p className="card-text">{post.content}</p>
+            <div
+              className="card-text"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            ></div>
           </div>
           <div className="d-flex justify-content-between">
             <div>
