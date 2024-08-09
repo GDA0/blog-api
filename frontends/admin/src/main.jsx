@@ -6,6 +6,7 @@ import { Root } from "./components/routes/Root";
 import { ErrorPage } from "./components/ErrorPage";
 import { Index } from "./components/Index";
 import { Post } from "./components/routes/Post";
+import { UpdatePost } from "./components/routes/UpdatePost";
 
 import "./index.css";
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: ":postId",
         element: <Post />,
+      },
+      {
+        path: ":postId/update",
+        element: <UpdatePost />,
       },
     ],
   },
