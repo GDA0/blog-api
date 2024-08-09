@@ -1,11 +1,11 @@
-import PropTypes from "prop-types";
-import Card from "./Card";
+import PropTypes from 'prop-types'
+import Card from './Card'
 
-export function PostList({ posts }) {
+export function PostList ({ posts }) {
   return (
-    <div className="row g-3">
+    <div className='row g-3'>
       {posts.map((post) => (
-        <div key={post.id} className="col col-md-4">
+        <div key={post.id} className='col col-md-4'>
           <Card
             id={post.id}
             title={post.title}
@@ -17,7 +17,7 @@ export function PostList({ posts }) {
         </div>
       ))}
     </div>
-  );
+  )
 }
 
 PostList.propTypes = {
@@ -27,10 +27,10 @@ PostList.propTypes = {
       title: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
       author: PropTypes.shape({
-        username: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired
       }).isRequired,
       updatedAt: PropTypes.string.isRequired,
-      comments: PropTypes.array.isRequired,
+      comments: PropTypes.array.isRequired
     })
-  ).isRequired,
-};
+  ).isRequired
+}

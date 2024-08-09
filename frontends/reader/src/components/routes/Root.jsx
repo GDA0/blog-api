@@ -1,52 +1,52 @@
-import { useState, useEffect } from "react";
-import { Header } from "../Header";
-import { Footer } from "../Footer";
-import { Outlet } from "react-router-dom";
-import axios from "../../axios-instance";
+import { useState, useEffect } from 'react'
+import { Header } from '../Header'
+import { Footer } from '../Footer'
+import { Outlet } from 'react-router-dom'
+import axios from '../../axios-instance'
 
-export function Root() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState("");
+export function Root () {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [posts, setPosts] = useState([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const fetchUser = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const response = await axios.get("/");
-        const { user, posts } = response.data;
+        const response = await axios.get('/')
+        const { user, posts } = response.data
 
-        setUser(user);
-        setPosts(posts);
-        setError("");
+        setUser(user)
+        setPosts(posts)
+        setError('')
       } catch (error) {
-        console.error(error);
-        setError("Something went wrong.");
+        console.error(error)
+        setError('Something went wrong.')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchUser();
-  }, []);
+    fetchUser()
+  }, [])
 
   return (
     <>
       <Header user={user} />
-      <main className="container my-5 py-3">
+      <main className='container my-5 py-3'>
         {error && (
-          <div className="text-center mx-auto" style={{ maxWidth: "420px" }}>
-            <div className="alert alert-danger" role="alert">
+          <div className='text-center mx-auto' style={{ maxWidth: '420px' }}>
+            <div className='alert alert-danger' role='alert'>
               {error}
             </div>
           </div>
         )}
 
         {loading && (
-          <div className="text-center">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
+          <div className='text-center'>
+            <div className='spinner-border text-primary' role='status'>
+              <span className='visually-hidden'>Loading...</span>
             </div>
           </div>
         )}
@@ -54,5 +54,5 @@ export function Root() {
       </main>
       <Footer />
     </>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-export function Header() {
+export function Header () {
   return (
     <header>
-      <nav className="navbar fixed-top bg-white border-bottom border-1">
-        <div className="container">
-          <Link className="navbar-brand">
-            Blog API{" "}
+      <nav className='navbar fixed-top bg-white border-bottom border-1'>
+        <div className='container'>
+          <Link className='navbar-brand'>
+            Blog API{' '}
             <sup>
               <small>
                 <small>Admin</small>
@@ -16,5 +16,5 @@ export function Header() {
         </div>
       </nav>
     </header>
-  );
+  )
 }

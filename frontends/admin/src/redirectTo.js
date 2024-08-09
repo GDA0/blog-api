@@ -1,4 +1,3 @@
-export function redirectTo(url) {
-    window.location.href = url;
-  }
-  
+export function redirectTo (url) {
+  window.location.href = url
+}

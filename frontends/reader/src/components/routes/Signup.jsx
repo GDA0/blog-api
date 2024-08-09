@@ -1,70 +1,70 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
+import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import axios from 'axios'
 
-import { redirectTo } from "../../redirectTo";
+import { redirectTo } from '../../redirectTo'
 
-export function Signup() {
+export function Signup () {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-  } = useForm();
+    watch
+  } = useForm()
 
-  const [errs, setErrs] = useState([]);
-  const [msg, setMsg] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [errs, setErrs] = useState([])
+  const [msg, setMsg] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  async function onSubmit(data) {
-    setLoading(true);
+  async function onSubmit (data) {
+    setLoading(true)
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/signup",
+        'http://localhost:3000/api/signup',
         data
-      );
-      const { msg, token, refreshToken } = response.data;
+      )
+      const { msg, token, refreshToken } = response.data
 
-      setErrs([]);
-      setMsg(msg);
-      localStorage.setItem("token", token);
-      localStorage.setItem("refreshToken", refreshToken);
+      setErrs([])
+      setMsg(msg)
+      localStorage.setItem('token', token)
+      localStorage.setItem('refreshToken', refreshToken)
 
       setTimeout(() => {
-        redirectTo("/");
-      }, 1500);
+        redirectTo('/')
+      }, 1500)
     } catch (error) {
       if (!error.response) {
         return setErrs([
           {
-            msg: "An error occurred during sign up. Please try again later.",
-          },
-        ]);
+            msg: 'An error occurred during sign up. Please try again later.'
+          }
+        ])
       }
-      setErrs(error.response.data.errors);
+      setErrs(error.response.data.errors)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
-  const password = watch("password");
+  const password = watch('password')
 
   return (
-    <div className="mx-auto" style={{ maxWidth: "540px" }}>
-      <h2 className="text-center">Sign up</h2>
+    <div className='mx-auto' style={{ maxWidth: '540px' }}>
+      <h2 className='text-center'>Sign up</h2>
 
       {loading && (
-        <div className="text-center">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
+        <div className='text-center'>
+          <div className='spinner-border text-primary' role='status'>
+            <span className='visually-hidden'>Loading...</span>
           </div>
         </div>
       )}
 
       {errs.length > 0 && (
-        <div className="alert alert-danger">
-          <ul className="mb-0">
+        <div className='alert alert-danger'>
+          <ul className='mb-0'>
             {errs.map((err) => (
               <li key={err.msg}>{err.msg}</li>
             ))}
@@ -73,146 +73,146 @@ export function Signup() {
       )}
 
       {msg && (
-        <div className="alert alert-success" role="alert">
+        <div className='alert alert-success' role='alert'>
           {msg}
         </div>
       )}
 
-      <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3 row">
-          <div className="col">
-            <label htmlFor="firstName" className="form-label">
+      <form className='my-3' onSubmit={handleSubmit(onSubmit)}>
+        <div className='mb-3 row'>
+          <div className='col'>
+            <label htmlFor='firstName' className='form-label'>
               First name
             </label>
             <input
-              type="text"
-              className="form-control"
-              id="firstName"
+              type='text'
+              className='form-control'
+              id='firstName'
               autoFocus
-              {...register("firstName", {
-                required: "First name is required",
+              {...register('firstName', {
+                required: 'First name is required',
                 validate: {
                   notEmpty: (value) =>
-                    value.trim() !== "" || "First name is required",
-                },
+                    value.trim() !== '' || 'First name is required'
+                }
               })}
             />
             {errors.firstName && (
-              <span className="text-danger">{errors.firstName.message}</span>
+              <span className='text-danger'>{errors.firstName.message}</span>
             )}
           </div>
-          <div className="col">
-            <label htmlFor="lastName" className="form-label">
+          <div className='col'>
+            <label htmlFor='lastName' className='form-label'>
               Last name
             </label>
             <input
-              type="text"
-              className="form-control"
-              id="lastName"
-              {...register("lastName", {
-                required: "Last name is required",
+              type='text'
+              className='form-control'
+              id='lastName'
+              {...register('lastName', {
+                required: 'Last name is required',
                 validate: {
                   notEmpty: (value) =>
-                    value.trim() !== "" || "Last name is required",
-                },
+                    value.trim() !== '' || 'Last name is required'
+                }
               })}
             />
             {errors.lastName && (
-              <span className="text-danger">{errors.lastName.message}</span>
+              <span className='text-danger'>{errors.lastName.message}</span>
             )}
           </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='username' className='form-label'>
             Username
           </label>
           <input
-            type="text"
-            className="form-control"
-            id="username"
-            {...register("username", {
-              required: "Username is required",
+            type='text'
+            className='form-control'
+            id='username'
+            {...register('username', {
+              required: 'Username is required',
               minLength: {
                 value: 3,
-                message: "Username must be between 3 and 20 characters long",
+                message: 'Username must be between 3 and 20 characters long'
               },
               maxLength: {
                 value: 20,
-                message: "Username must be between 3 and 20 characters long",
+                message: 'Username must be between 3 and 20 characters long'
               },
               pattern: {
                 value: /^[a-zA-Z0-9_.]+$/,
                 message:
-                  "Username can only contain letters, numbers, underscores, or periods",
+                  'Username can only contain letters, numbers, underscores, or periods'
               },
               validate: {
                 notEmpty: (value) =>
-                  value.trim() !== "" || "Username is required",
-              },
+                  value.trim() !== '' || 'Username is required'
+              }
             })}
           />
           {errors.username && (
-            <span className="text-danger">{errors.username.message}</span>
+            <span className='text-danger'>{errors.username.message}</span>
           )}
         </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='password' className='form-label'>
             Password
           </label>
           <input
-            type="password"
-            className="form-control"
-            id="password"
-            autoComplete="new-password"
-            {...register("password", {
-              required: "Password is required",
+            type='password'
+            className='form-control'
+            id='password'
+            autoComplete='new-password'
+            {...register('password', {
+              required: 'Password is required',
               minLength: {
                 value: 8,
-                message: "Password must be between 8 and 64 characters long",
+                message: 'Password must be between 8 and 64 characters long'
               },
               maxLength: {
                 value: 64,
-                message: "Password must be between 8 and 64 characters long",
+                message: 'Password must be between 8 and 64 characters long'
               },
               pattern: {
                 value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/,
                 message:
-                  "Password must contain at least one uppercase letter, one lowercase letter, and one number",
-              },
+                  'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+              }
             })}
           />
           {errors.password && (
-            <span className="text-danger">{errors.password.message}</span>
+            <span className='text-danger'>{errors.password.message}</span>
           )}
         </div>
-        <div className="mb-3">
-          <label htmlFor="confirmPassword" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='confirmPassword' className='form-label'>
             Confirm password
           </label>
           <input
-            type="password"
-            className="form-control"
-            id="confirmPassword"
-            autoComplete="new-password"
-            {...register("confirmPassword", {
-              required: "Confirm password is required",
+            type='password'
+            className='form-control'
+            id='confirmPassword'
+            autoComplete='new-password'
+            {...register('confirmPassword', {
+              required: 'Confirm password is required',
               validate: (value) =>
-                value === password || "Passwords do not match",
+                value === password || 'Passwords do not match'
             })}
           />
           {errors.confirmPassword && (
-            <span className="text-danger">
+            <span className='text-danger'>
               {errors.confirmPassword.message}
             </span>
           )}
         </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Signing Up..." : "Sign Up"}
+        <button type='submit' className='btn btn-primary' disabled={loading}>
+          {loading ? 'Signing Up...' : 'Sign Up'}
         </button>
       </form>
-      <p className="text-center">
-        Already have an account? <Link to="/login">Log in</Link>
+      <p className='text-center'>
+        Already have an account? <Link to='/login'>Log in</Link>
       </p>
     </div>
-  );
+  )
 }

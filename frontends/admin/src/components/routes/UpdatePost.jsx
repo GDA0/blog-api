@@ -1,83 +1,83 @@
-import { useState, useEffect } from "react";
-import { useParams, useOutletContext } from "react-router-dom";
-import { Editor } from "@tinymce/tinymce-react";
+import { useState, useEffect } from 'react'
+import { useParams, useOutletContext } from 'react-router-dom'
+import { Editor } from '@tinymce/tinymce-react'
 
-import axios from "../../axios-instance";
-import { redirectTo } from "../../redirectTo";
+import axios from '../../axios-instance'
+import { redirectTo } from '../../redirectTo'
 
 import 'dotenv/config'
 
-export function UpdatePost() {
-  const { postId } = useParams();
-  const [posts] = useOutletContext();
-  let post = posts.find((post) => post.id === postId);
+export function UpdatePost () {
+  const { postId } = useParams()
+  const [posts] = useOutletContext()
+  let post = posts.find((post) => post.id === postId)
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (post) {
-      setTitle(post.title);
-      setContent(post.content);
+      setTitle(post.title)
+      setContent(post.content)
     }
-  }, [post]);
+  }, [post])
 
   if (!post) {
-    return;
+    return
   }
 
   const handleEditorChange = (content) => {
-    setContent(content);
-  };
+    setContent(content)
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await axios.put(`/${postId}`, {
         title,
-        content,
-      });
+        content
+      })
 
-      const { updatedPost } = response.data;
-      post = updatedPost;
-      setError("");
+      const { updatedPost } = response.data
+      post = updatedPost
+      setError('')
 
-      redirectTo(`/${postId}`);
+      redirectTo(`/${postId}`)
     } catch (error) {
-      console.error(error);
-      setError("Something went wrong");
+      console.error(error)
+      setError('Something went wrong')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div>
       {error && (
-        <div className="text-center mx-auto" style={{ maxWidth: "420px" }}>
-          <div className="alert alert-danger" role="alert">
+        <div className='text-center mx-auto' style={{ maxWidth: '420px' }}>
+          <div className='alert alert-danger' role='alert'>
             {error}
           </div>
         </div>
       )}
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='title' className='form-label'>
             Title
           </label>
           <input
-            type="text"
-            className="form-control"
-            id="title"
+            type='text'
+            className='form-control'
+            id='title'
             value={title}
             onChange={(event) => setTitle(event.target.value)}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="content" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='content' className='form-label'>
             Content
           </label>
           <Editor
@@ -85,27 +85,27 @@ export function UpdatePost() {
             value={content}
             init={{
               plugins:
-                "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown",
+                'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
               toolbar:
-                "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-              tinycomments_mode: "embedded",
-              tinycomments_author: "Author name",
+                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+              tinycomments_mode: 'embedded',
+              tinycomments_author: 'Author name',
               mergetags_list: [
-                { value: "First.Name", title: "First Name" },
-                { value: "Email", title: "Email" },
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' }
               ],
               ai_request: (request, respondWith) =>
                 respondWith.string(() =>
-                  Promise.reject("See docs to implement AI Assistant")
-                ),
+                  Promise.reject('See docs to implement AI Assistant')
+                )
             }}
             onEditorChange={handleEditorChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Updating Post..." : "Update Post"}
+        <button type='submit' className='btn btn-primary' disabled={loading}>
+          {loading ? 'Updating Post...' : 'Update Post'}
         </button>
       </form>
     </div>
-  );
+  )
 }
