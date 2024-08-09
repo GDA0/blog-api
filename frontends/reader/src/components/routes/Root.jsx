@@ -8,6 +8,7 @@ export function Root() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -18,8 +19,10 @@ export function Root() {
 
         setUser(user);
         setPosts(posts);
+        setError("");
       } catch (error) {
         console.error(error);
+        setError("Something went wrong.");
       } finally {
         setLoading(false);
       }
@@ -32,6 +35,14 @@ export function Root() {
     <>
       <Header user={user} />
       <main className="container my-5 py-3">
+        {error && (
+          <div className="text-center mx-auto" style={{ maxWidth: "420px" }}>
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          </div>
+        )}
+
         {loading && (
           <div className="text-center">
             <div className="spinner-border text-primary" role="status">

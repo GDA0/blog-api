@@ -6,8 +6,13 @@ export function Header({ user }) {
     <header>
       <nav className="navbar fixed-top bg-white border-bottom border-1">
         <div className="container">
-          <Link className="navbar-brand" to="/">
-            Blog API
+          <Link className="navbar-brand">
+            Blog API{" "}
+            <sup>
+              <small>
+                <small>Reader</small>
+              </small>
+            </sup>
           </Link>
           <div className="ms-auto d-flex align-items-center">
             {user ? (
