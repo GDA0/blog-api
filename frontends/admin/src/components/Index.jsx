@@ -43,7 +43,7 @@ export function Index() {
             {posts.map((post) => (
               <tr key={post.id}>
                 <td>
-                  <Link to={`/posts/${post.id}`}>{post.title}</Link>
+                  <Link to={`/${post.id}`}>{post.title}</Link>
                 </td>
                 <td>{post.published ? "Published" : "Unpublished"}</td>
               </tr>
