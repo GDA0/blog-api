@@ -26,7 +26,7 @@ export function Login () {
     setLoading(true)
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/login',
+        'https://blog-api-backend-production-2f06.up.railway.app/api/login',
         data
       )
       const { msg, token, refreshToken } = response.data
@@ -44,13 +44,18 @@ export function Login () {
           window.location.reload()
         }, 15)
       }, 1500)
+
+      setErrs([])
     } catch (error) {
+      console.error(error)
       if (!error.response) {
         return setErrs([
           {
             msg: 'An error occurred during login up. Please try again later.'
           }
         ])
+      } else if (!error.response.data.errors) {
+        return setErrs([error.response.data])
       }
       setErrs(error.response.data.errors)
     } finally {
@@ -70,7 +75,7 @@ export function Login () {
         </div>
       )}
 
-      {errs.length > 0 && (
+      {errs?.length > 0 && (
         <div className='alert alert-danger'>
           <ul className='mb-0'>
             {errs.map((err) => (

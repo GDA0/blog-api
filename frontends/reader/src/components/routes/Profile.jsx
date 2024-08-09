@@ -12,7 +12,9 @@ export function Profile () {
     event.preventDefault()
     try {
       setLoading(true)
-      const response = await axios.get('http://localhost:3000/api/logout')
+      const response = await axios.get(
+        'https://blog-api-backend-production-2f06.up.railway.app/api/logout'
+      )
       if (response.status === 200) {
         localStorage.removeItem('token')
         localStorage.removeItem('refreshToken')

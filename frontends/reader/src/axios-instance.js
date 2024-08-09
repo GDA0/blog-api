@@ -4,7 +4,7 @@ import { redirectTo } from './redirectTo'
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api'
+  baseURL: 'https://blog-api-backend-production-2f06.up.railway.app/api'
 })
 
 // Add a request interceptor
@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
         }
 
         const { data } = await axios.post(
-          'http://localhost:3000/api/refresh-token',
+          'blog-api-backend-production-2f06.up.railway.app/api/refresh-token',
           { refreshToken }
         )
 

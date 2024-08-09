@@ -21,7 +21,7 @@ export function Signup () {
     setLoading(true)
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/signup',
+        'https://blog-api-backend-production-2f06.up.railway.app/api/signup',
         data
       )
       const { msg, token, refreshToken } = response.data
